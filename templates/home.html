@@ -1,0 +1,14 @@
+<!-- Import base.html for standard html layout -->
+{% extends 'base.html' %}
+
+<!-- Describes content-->
+{% block content %}
+    <h1>This is :p {{name}}</h1>
+
+    <form action="extern" method="post">
+    {% csrf_token %}
+        <input type="text" value="fill" name="num">
+        <input type="submit">
+    </form>
+{% endblock %}
+
