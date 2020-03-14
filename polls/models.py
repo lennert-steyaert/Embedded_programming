@@ -16,8 +16,8 @@ from django.contrib.postgres.fields import ArrayField
 
 class Device(models.Model):
     name = models.CharField(max_length=100)                 # Unique name from device
-    LastSync = models.DateTimeField()                       # Last sync timestamp with the device
-    LastMessageAccepted = models.BooleanField(default=True) # Last message is accepted = True
+    lastSync = models.DateTimeField()                       # Last sync timestamp with the device
+    lastMessageAccepted = models.BooleanField(default=True) # Last message is accepted = True
     img = models.ImageField(upload_to='pics')
     #########
     # Device has multiple IO table relationship
@@ -39,5 +39,3 @@ class IO(models.Model):
     stateText = models.CharField(max_length=32)                         # If the type had a string value this field represent that value
     stateDecimal = models.DecimalField(max_digits=20, decimal_places=2) # If the type had an decimal value this field represent that value
     device = models.ForeignKey(Device, on_delete=models.CASCADE)        # I am a IO and I belong to a device...
-
-

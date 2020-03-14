@@ -1,9 +1,34 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
-from .models import models
+from .imodel import iDevice
+import json
+from django.core import serializers
+
+from django.views.decorators.csrf import csrf_exempt
+
+#################################################################
+#///////////////////////////////////////////////////////////////#
+#################################################################
+# This file contains the view in python (controllers)
+#################################################################
+#///////////////////////////////////////////////////////////////#
+#################################################################
 
 
+##################################################
+#               Global variables
+##################################################
+
+iDevice = iDevice()
+
+##################################################
+#                  Controllers
+##################################################
+
+#########
+# Media
+#########
 
 def index(request):
     #return HttpResponse("Hello there welcome at the Lenny's django page")
@@ -12,6 +37,24 @@ def extern(request):
     result = request.POST["num"]
     return render(request,'extern.html',{'result':result})
 
+#########
+# API
+#########
+
+@csrf_exempt
+def device(request):
+    print("########################################")
+    if request.method == 'GET' and 'id' in request.GET:
+        print("Get with id")
+    if request.method == "GET":
+        print("GET")
+    if request.method == "POST":
+        print("POST")
+
+    list = iDevice.GetDevices()
+    response = json.dumps(list, default=lambda o: o.__dict__, indent=4)
+    return HttpResponse(response)
+
 def test(request):
-    return JsonResponse(["Jo dit is mijn API ;)"], safe=False)
+    return JsonResponse(["Succesfull JSON response"], safe=False)
     #return "Jo dit is een test"
