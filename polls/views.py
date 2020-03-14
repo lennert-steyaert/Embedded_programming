@@ -43,15 +43,28 @@ def extern(request):
 
 @csrf_exempt
 def device(request):
+    list = []
     print("########################################")
     if request.method == 'GET' and 'id' in request.GET:
         print("Get with id")
     if request.method == "GET":
         print("GET")
+        try:
+            data = json.loads(request.body.decode("utf-8"))
+            id = data['id']
+            if(id == 0):
+                return JsonResponse(["ID 0 does not exist"], safe=False)
+            else:
+                print("done")
+                iDevice.GetDevice(id)
+                return JsonResponse(["In progress"], safe=False)
+        except:
+            list = iDevice.GetDevices()
+        
     if request.method == "POST":
         print("POST")
 
-    list = iDevice.GetDevices()
+            
     response = json.dumps(list, default=lambda o: o.__dict__, indent=4)
     return HttpResponse(response)
 

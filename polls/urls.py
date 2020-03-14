@@ -7,7 +7,8 @@ urlpatterns = [
     path('',views.index,name='index'),
     path('extern',views.extern,name='extern'),
     path('test',views.test,name='test'),
-    path('device',views.device,name='device')
+    path('device',views.device,name='device'),
+ #   path('device/<int:id>',views.device,name='device'),
 ]
 
 urlpatterns = urlpatterns + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

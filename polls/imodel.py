@@ -62,6 +62,9 @@ class iDevice:
         
         return
 
+    def GetDevice(self,id):
+        return
+        
     def PostDevice(self,deviceDTO):
         return
     
