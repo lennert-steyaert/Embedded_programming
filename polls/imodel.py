@@ -19,14 +19,11 @@ from .dtos import DTODevice
 
 class iDevice:
     debug = True
-    def GetDevices(self):
+
+    def DictToList(self,dict):
         # Function variables
         list = []
 
-        # Load query and format to dict
-        queryset = Device.objects.all()
-        data = serializers.serialize('json', queryset)
-        dict = json.loads(data)
         # Loop through dict
         for item in dict:
             pk = item['pk'] # Get primary key
@@ -50,13 +47,26 @@ class iDevice:
             dtodevice.pk = pk
             dtodevice.IO = []
             dtodevice.device = device
-            list.append(dtodevice)
 
+            list.append(dtodevice)
+        return list
+
+    def GetDevices(self):
+        # Get objects from DB
+        queryset = Device.objects.all()
+        # Queryset to JSON
+        data = serializers.serialize('json', queryset)
+        # Load JSON as dictionary
+        dict = json.loads(data)
+        # Put data in list
+        result = self.DictToList(dict)
+        # Debug
         if self.debug:
             print("###DEBUG###")
-            for item in list:
+            for item in result:
                 print(item.pk)
-        return list
+                
+        return result
 
     def GetDevicesWithIO(self):
         
@@ -64,9 +74,23 @@ class iDevice:
 
     def GetDevice(self,id):
         return
-        
-    def PostDevice(self,deviceDTO):
+
+    def GetDeviceByName(self,name):
         return
+
+    def PostDevice(self,device):
+        # Save device in DB
+        device.save()
+        # Get object from DB
+        queryset = Device.objects.filter(pk=device.pk)
+        # Queryset to JSON
+        data = serializers.serialize('json', queryset)
+        # Load JSON as dictionary
+        dict = json.loads(data)
+        # Put data in list
+        result = self.DictToList(dict)
+        
+        return result
     
     def PutDevice(self,id,deviceDTO):
         return
