@@ -8,6 +8,8 @@ urlpatterns = [
     path('extern',views.extern,name='extern'),
     path('device',views.device,name='device'),
     path('io',views.io,name='io'),
+    path('deviceIO',views.deviceIO,name='deviceIO'),
+    
  #   path('device/<int:id>',views.device,name='device'),
 ]
 

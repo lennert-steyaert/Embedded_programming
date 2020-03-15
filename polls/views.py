@@ -342,3 +342,31 @@ def io_delete(request):
                 return HttpResponse(status=409)
     except:
         return HttpResponse(status=404)
+
+#/////////////////
+# IO
+
+@csrf_exempt
+def deviceIO(request):
+    print("########################################")
+    if request.method == "GET":
+        print("GET")
+        return deviceIO_get(request)
+
+# GET
+def deviceIO_get(request):
+    try:
+        data = json.loads(request.body.decode("utf-8"))
+        print(type(data)) 
+        print(data)
+        id = data['id']
+        if(id == 0):
+            return HttpResponse(status=404)
+        else:
+            list = iIO.GetDeviceIOs(id)
+            if(list == None):
+                return HttpResponse(status=404)
+            response = json.dumps(list, default=lambda o: o.__dict__, indent=4)
+            return HttpResponse(response)
+    except:
+        return HttpResponse(status=404)    

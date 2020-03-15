@@ -140,6 +140,8 @@ class iDevice:
         count = Device.objects.all().count()
         print(count)
 
+
+
 ##################################################
 #               Repo for IO
 ##################################################
@@ -272,3 +274,17 @@ class iIO:
             # Delete record
             queryset.delete()
             return True
+    
+    def GetDeviceIOs(self,id):
+        queryset = IO.objects.filter(device=id)
+        print(queryset)
+        if(not queryset):
+            return None
+        else:
+            # Queryset to JSON
+            data = serializers.serialize('json', queryset)
+            # Load JSON as dictionary
+            dict = json.loads(data)
+            # Put data in list
+            result = self.DictToList(dict)
+            return result
