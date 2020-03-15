@@ -2,8 +2,10 @@ from django.core import serializers
 import json
 from .models import Device
 from .models import IO
+from .models import Type
 
 from .dtos import DTODevice
+from .dtos import DTOIO
 
 #################################################################
 #///////////////////////////////////////////////////////////////#
@@ -65,15 +67,22 @@ class iDevice:
             print("###DEBUG###")
             for item in result:
                 print(item.pk)
-                
+
         return result
 
-    def GetDevicesWithIO(self):
-        
-        return
-
     def GetDevice(self,id):
-        return
+        # Get object from DB
+        queryset = Device.objects.filter(pk=id)
+        if(not queryset):
+            return None
+        else:
+            # Queryset to JSON
+            data = serializers.serialize('json', queryset)
+            # Load JSON as dictionary
+            dict = json.loads(data)
+            # Put data in list
+            result = self.DictToList(dict)
+            return result
 
     def GetDeviceByName(self,name):
         return
@@ -93,9 +102,38 @@ class iDevice:
         return result
     
     def PutDevice(self,id,deviceDTO):
-        return
+        queryfind = Device.objects.filter(pk=id)
+        if(not queryfind):
+            return None
+        else:
+            queryset = Device.objects.get(pk=id)
+            queryset.name = deviceDTO.name
+            queryset.lastSync = deviceDTO.lastSync
+            queryset.lastSync = deviceDTO.lastSync
+            queryset.lastMessageAccepted = deviceDTO.lastMessageAccepted
+            queryset.img = deviceDTO.img
+
+            queryset.save()
+
+            # Get object from DB
+            queryset = Device.objects.filter(pk=id)
+            # Queryset to JSON
+            data = serializers.serialize('json', queryset)
+            # Load JSON as dictionary
+            dict = json.loads(data)
+            # Put data in list
+            result = self.DictToList(dict)
+            return result
 
     def DeleteDevice(self,id):
+        # Get object from DB
+        queryset = Device.objects.filter(pk=id)
+        if(not queryset):
+            return False
+        else:
+            # Delete record
+            queryset.delete()
+            return True
         return
 
     def DeviceCount(self):
@@ -108,49 +146,112 @@ class iDevice:
 
 class iIO:
     debug = True
-    def GetIO(self):
+    def DictToList(self,dict):
         # Function variables
         list = []
 
-        # Load query and format to dict
-        queryset = Device.objects.all()
-        data = serializers.serialize('json', queryset)
-        dict = json.loads(data)
         # Loop through dict
         for item in dict:
             pk = item['pk'] # Get primary key
             fields = item['fields'] # Get all fields in sub-dict
 
             # Get field in record
-            name = fields['name']
-            lastSync = fields['lastSync']
-            lastMessageAccepted = fields['lastMessageAccepted']
-            img = fields['img']
+            type = fields['type']
+            stateInteger = fields['stateInteger']
+            stateText = fields['stateText']
+            stateDecimal = fields['stateDecimal']
+            device = fields['device']
+            pin = fields['pin']
 
-            # Put field in device object
-            device = Device()
-            device.name = name
-            device.lastSync = lastSync
-            device.lastMessageAccepted = lastMessageAccepted
-            device.img = img
+            # Put field in IO object
+            io = IO()
+            io.type = type
+            io.stateInteger = stateInteger
+            io.stateText = stateText
+            io.stateDecimal = stateDecimal
+            io.pin = pin
+            #io.device = device
 
-            # Put device object DTO object
-            dtodevice = DTODevice()
-            dtodevice.pk = pk
-            dtodevice.IO = []
-            dtodevice.device = device
-            list.append(dtodevice)
-
-        if self.debug:
-            print("###DEBUG###")
-            for item in list:
-                print(item.pk)
+            # Put IO object DTO object
+            dtoio = DTOIO()
+            dtoio.pk = pk
+            dtoio.device = device
+            dtoio.IO = io
+            
+            list.append(dtoio)
         return list
 
-    def PostIO(self,ioDTO):
-        return
+    def GetIOs(self):
+        # Get object from DB
+        queryset = IO.objects.all()
+        if(not queryset):
+            return None
+        else:
+            # Queryset to JSON
+            data = serializers.serialize('json', queryset)
+            # Load JSON as dictionary
+            dict = json.loads(data)
+            # Put data in list
+            result = self.DictToList(dict)
+            return result
+
+    def GetIO(self,id):
+        # Get object from DB
+        queryset = IO.objects.filter(pk=id)
+        if(not queryset):
+            return None
+        else:
+            # Queryset to JSON
+            data = serializers.serialize('json', queryset)
+            # Load JSON as dictionary
+            dict = json.loads(data)
+            # Put data in list
+            result = self.DictToList(dict)
+            return result
+
+    def PostIO(self,ioDTO,deviceId):
+        try:
+            queryDevice = Device.objects.get(pk=deviceId)
+        except:
+            return None
+
+        ioDTO.device = queryDevice
+        # Save device in DB
+        ioDTO.save()
+        # Get object from DB
+        queryset = IO.objects.filter(pk=ioDTO.pk)
+        # Queryset to JSON
+        data = serializers.serialize('json', queryset)
+        # Load JSON as dictionary
+        dict = json.loads(data)
+        # Put data in list
+        result = self.DictToList(dict)
+        
+        return result
     
     def PutIO(self,id,ioDTO):
+        queryfind = IO.objects.filter(pk=id)
+        if(not queryfind):
+            return None
+        else:
+            queryset = IO.objects.get(pk=id)
+            queryset.type = ioDTO.type
+            queryset.stateInteger = ioDTO.stateInteger
+            queryset.stateText = ioDTO.stateText
+            queryset.stateDecimal = ioDTO.stateDecimal
+            queryset.pin = ioDTO.pin
+
+            queryset.save()
+
+            # Get object from DB
+            queryset = IO.objects.filter(pk=id)
+            # Queryset to JSON
+            data = serializers.serialize('json', queryset)
+            # Load JSON as dictionary
+            dict = json.loads(data)
+            # Put data in list
+            result = self.DictToList(dict)
+            return result
         return
 
     def PatchIOstateInteger(self,id,integer):
@@ -163,4 +264,11 @@ class iIO:
         return
 
     def DeleteIO(self,id):
-        return
+        # Get object from DB
+        queryset = IO.objects.filter(pk=id)
+        if(not queryset):
+            return False
+        else:
+            # Delete record
+            queryset.delete()
+            return True

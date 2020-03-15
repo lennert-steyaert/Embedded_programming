@@ -29,11 +29,13 @@ class Device(models.Model):
 # Stands for physical IO on a µc / computer (pi/beaglebone etc) !!SUBCLASS!!
 ############################################################################
 
+class Type(models.TextChoices):
+    INPUT = 'I',                     #INPUT
+    OUTPUT = 'O',                   #OUTPUT
+    I2C_TMP102 = 'JR', 'I2C_TMP102' #TMP102
+
 class IO(models.Model):
-    class Type(models.TextChoices):
-        INPUT = 'I',                     #INPUT
-        OUTPUT = 'O',                   #OUTPUT
-        I2C_TMP102 = 'JR', 'I2C_TMP102' #TMP102
+    pin = models.CharField(max_length=10) 
     type = models.CharField(max_length=2,choices=Type.choices)          # Stand for the type of the IO described in class Type
     stateInteger = models.IntegerField(default=0)                       # If the type had an integer value this field represent that value
     stateText = models.CharField(max_length=32)                         # If the type had a string value this field represent that value

@@ -6,8 +6,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('',views.index,name='index'),
     path('extern',views.extern,name='extern'),
-    path('test',views.test,name='test'),
     path('device',views.device,name='device'),
+    path('io',views.io,name='io'),
  #   path('device/<int:id>',views.device,name='device'),
 ]
 
