@@ -62,6 +62,26 @@ def extern(request):
 
 #/////////////////
 # Device
+
+# SECURE
+class DeviceView(RetrieveAPIView):
+
+    permission_classes = (IsAuthenticated,)
+    authentication_class = JSONWebTokenAuthentication
+
+    def get(self, request):
+        return device_get(request)
+
+    def post(self, request):
+        return device_post(request)
+    
+    def put(self, request):
+        return device_put(request)
+
+    def delete(self, request):
+        return device_delete(request)
+
+# NOT SECURE
 @csrf_exempt
 def device(request):
     print("########################################")
@@ -196,6 +216,25 @@ def device_delete(request):
 #/////////////////
 # IO
 
+# SECURE
+class IOView(RetrieveAPIView):
+
+    permission_classes = (IsAuthenticated,)
+    authentication_class = JSONWebTokenAuthentication
+
+    def get(self, request):
+        return io_get(request)
+
+    def post(self, request):
+        return io_post(request)
+    
+    def put(self, request):
+        return io_put(request)
+
+    def delete(self, request):
+        return io_delete(request)
+
+# NOT SECURE
 @csrf_exempt
 def io(request):
     print("########################################")
@@ -358,17 +397,28 @@ def io_delete(request):
         return HttpResponse(status=404)
 
 #/////////////////
-# IO
+# DeviceIO request
 
+# SECURE
+class DeviceIOView(RetrieveAPIView):
+
+    permission_classes = (IsAuthenticated,)
+    authentication_class = JSONWebTokenAuthentication
+
+    def get(self, request):
+        return deviceio_get(request)
+
+
+# NOT SECURE
 @csrf_exempt
 def deviceIO(request):
     print("########################################")
     if request.method == "GET":
         print("GET")
-        return deviceIO_get(request)
+        return deviceio_get(request)
 
 # GET
-def deviceIO_get(request):
+def deviceio_get(request):
     try:
         data = json.loads(request.body.decode("utf-8"))
         print(type(data)) 
@@ -388,6 +438,7 @@ def deviceIO_get(request):
 #/////////////////
 # User
 
+# Secure
 class UserRegistrationView(CreateAPIView):
 
     serializer_class = UserRegistrationSerializer
@@ -405,7 +456,7 @@ class UserRegistrationView(CreateAPIView):
             }
         
         return Response(response, status=status_code)
-
+# Secure
 class UserLoginView(RetrieveAPIView):
 
     permission_classes = (AllowAny,)
@@ -423,7 +474,7 @@ class UserLoginView(RetrieveAPIView):
         status_code = status.HTTP_200_OK
 
         return Response(response, status=status_code)
-
+#Secure
 class UserProfileView(RetrieveAPIView):
 
     permission_classes = (IsAuthenticated,)
@@ -451,17 +502,4 @@ class UserProfileView(RetrieveAPIView):
                 'message': 'User does not exists',
                 'error': str(e)
                 }
-        return Response(response, status=status_code)
-
-class TestView(RetrieveAPIView):
-
-    permission_classes = (IsAuthenticated,)
-    authentication_class = JSONWebTokenAuthentication
-
-    def get(self, request):
-        status_code = status.HTTP_200_OK
-        response = {
-            'success': 'true',
-            'status code': status_code
-            }
         return Response(response, status=status_code)

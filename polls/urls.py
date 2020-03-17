@@ -6,7 +6,9 @@ from django.conf.urls.static import static
 from .views import UserRegistrationView
 from .views import UserLoginView
 from .views import UserProfileView
-from .views import TestView
+from .views import DeviceView
+from .views import IOView
+from .views import DeviceIOView
 
 urlpatterns = [
     path('',views.index,name='index'),
@@ -17,7 +19,9 @@ urlpatterns = [
     url(r'^signup', UserRegistrationView.as_view()),
     url(r'^signin', UserLoginView.as_view()),
     url(r'^profile', UserProfileView.as_view()),
-    url(r'^testview', TestView.as_view())
+    url(r'^deviceview', DeviceView.as_view()),
+    url(r'^ioview', IOView.as_view()),
+    url(r'^deviceioview', DeviceIOView.as_view())
  #   path('profile/<int:id>',views.device,name='device'),
 ]
 
