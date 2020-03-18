@@ -51,7 +51,8 @@ iIO = iIO()
 
 def index(request):
     #return HttpResponse("Hello there welcome at the Lenny's django page")
-    return render(request,'home.html',{'name':'Lenny'})
+    devices = Device.objects.all()
+    return render(request,'home.html',{'devices':devices})
 def extern(request):
     result = request.POST["num"]
     return render(request,'extern.html',{'result':result})
