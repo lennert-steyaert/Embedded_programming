@@ -13,27 +13,30 @@
        </div>
        <div class="row justify-content-md-center">
             {% for dev in devices %}
-            <div class="col-md-2" align="center">
+            <div class="col-md-4 space-top" align="center">
                 <div class="deviceview">
-                    <h4>{{dev.name}}</h4>
+                    <h5>{{dev.name}}</h4>
                     <br>
-                    <h5>{{dev.pk}}</h5>
+                    <h7>ID: {{dev.pk}} | {{dev.lastMessageAccepted}}</h7>
+                    <hr>
+                    <h7>{{dev.lastSync}}</h7>
                     <br>
-                    <h5>{{dev.lastSync}}</h5>
-                    <br>
-                    <h5>{{dev.lastMessageAccepted}}</h5>
-                    <img src="{{dev.img.url}}">
+                </div>
+                <div class="devicepicture">
+                    <img class="responsive-img fitpicture" src="{{dev.img.url}}">
                 </div>
             </div>
             {% endfor %}
         </div>
     </div>
-    <div class="alert alert-primary" role="alert">
-        This is a primary alert—check it out!
-    </div>
+    <div class="row justify-content-md-center">
+        <div class="col-sm" align="center">
+            <h1>IO</h1>
+        </div>
+   </div>
+
     <form action="extern" method="post">
     {% csrf_token %}
-        <input type="text" value="fill" name="num">
         <input type="submit">
     </form>
 {% endblock %}
