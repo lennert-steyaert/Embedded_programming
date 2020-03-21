@@ -8,6 +8,7 @@ from .imodel import iIO
 import json
 from django.core import serializers
 from datetime import datetime
+from datetime import timedelta
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -52,10 +53,32 @@ iIO = iIO()
 def index(request):
     #return HttpResponse("Hello there welcome at the Lenny's django page")
     devices = Device.objects.all()
-    return render(request,'home.html',{'devices':devices})
+    date = datetime.now()-timedelta(seconds=30)
+    return render(request,'home.html',{'devices':devices,'datetime':date})
 def extern(request):
     result = request.POST["num"]
     return render(request,'extern.html',{'result':result})
+@csrf_exempt
+def webios(request):
+    data = json.loads(request.body.decode("utf-8"))
+    if "pk" in data:
+        pk = data["pk"]
+    else:
+        return HttpResponse(status=404)
+    print("DO SCRIPT")
+    print(pk)
+    ios = iIO.GetDeviceIOs(pk)
+    print(ios)
+    if(ios == None):
+        ios = []
+    for io in ios:
+        print(io.IO.pin)
+    return render(request,'io.html',{'ios':ios})
+
+def webdevices(request):
+    devices = Device.objects.all()
+    date = datetime.now()-timedelta(seconds=30)
+    return render(request,'devices.html',{'devices':devices,'datetime':date})
 
 #########
 # API

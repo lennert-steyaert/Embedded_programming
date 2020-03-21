@@ -1,4 +1,5 @@
 <!-- Import base.html for standard html layout -->
+
 {% extends 'base.html' %}
 
 <!-- Describes content-->
@@ -6,34 +7,53 @@
 
     <div class="container">
     <!-- Content here -->
-        <div class="row justify-content-md-center">
-            <div class="col-sm" align="center">
+        <div class="row" >
+            <div class="col-sm-2  offset-sm-5 space-top" align="center">
                 <h1>Devices</h1>
             </div>
+            <div class="col-sm-2 space-top-button" align="center">
+                <button id="button-reload" type="button" class="btn btn-light" onclick="reloadDevices()">Reload</button>
+            </div>
        </div>
+       <div id="DevicesView">
        <div class="row justify-content-md-center">
             {% for dev in devices %}
-            <div class="col-md-4 space-top" align="center">
+            <div class="col-md-4 space-top" align="center"  onclick="postDevice({{dev.pk}})">
                 <div class="deviceview">
                     <h5>{{dev.name}}</h4>
                     <br>
                     <h7>ID: {{dev.pk}} | {{dev.lastMessageAccepted}}</h7>
                     <hr>
+                    <h7>State: </h7>
+                    {% if dev.lastSync.date == datetime.date and dev.lastSync.time >= datetime.time %}
+                        <!--Device online-->
+                        <i class="far fa-check-circle"></i>
+                    {% else %}
+                        <!--Device offline-->
+                        <i class="fas fa-exclamation-triangle"></i>
+                    {% endif %}
+                    <hr>
                     <h7>{{dev.lastSync}}</h7>
                     <br>
                 </div>
                 <div class="devicepicture">
-                    <img class="responsive-img fitpicture" src="{{dev.img.url}}">
+                    <a href="{{dev.img.url}}">Image here</a>
+                    <!--<img class="responsive-img fitpicture" src="{{dev.img.url}}">-->
                 </div>
             </div>
             {% endfor %}
+         </div>
+        </div> 
+
+        <div class="row justify-content-md-center space-top">
+            <div class="col-sm" align="center">
+                <h1>IO</h1>
+            </div>
+        </div>
+        <div id="DetailView">
+            <!-- Io from devices load by ajax-->
         </div>
     </div>
-    <div class="row justify-content-md-center">
-        <div class="col-sm" align="center">
-            <h1>IO</h1>
-        </div>
-   </div>
 
     <form action="extern" method="post">
     {% csrf_token %}

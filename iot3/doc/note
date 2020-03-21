@@ -1,0 +1,5 @@
+    type = models.CharField(max_length=2,choices=Type.choices)          # Stand for the type of the IO described in class Type
+    stateInteger = models.IntegerField(default=0)                       # If the type had an integer value this field represent that value
+    stateText = models.CharField(max_length=32)                         # If the type had a string value this field represent that value
+    stateDecimal = models.DecimalField(max_digits=20, decimal_places=2) # If the type had an decimal value this field represent that value
+    device = models.ForeignKey(Device, on_delete=models.CASCADE)        # I am a IO and I belong to a device...

@@ -16,6 +16,8 @@ urlpatterns = [
     path('device',views.device,name='device'),
     path('io',views.io,name='io'),
     path('deviceIO',views.deviceIO,name='deviceIO'),
+    path('webios',views.webios,name='webios'),
+    path('webdevices',views.webdevices,name='webdevices'),
     url(r'^signup', UserRegistrationView.as_view()),
     url(r'^signin', UserLoginView.as_view()),
     url(r'^profile', UserProfileView.as_view()),
@@ -25,4 +27,3 @@ urlpatterns = [
  #   path('profile/<int:id>',views.device,name='device'),
 ]
 
-urlpatterns = urlpatterns + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

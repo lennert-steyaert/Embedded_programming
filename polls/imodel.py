@@ -3,7 +3,7 @@ import json
 from .models import Device
 from .models import IO
 from .models import Type
-
+from datetime import datetime
 from .dtos import DTODevice
 from .dtos import DTOIO
 
@@ -108,8 +108,7 @@ class iDevice:
         else:
             queryset = Device.objects.get(pk=id)
             queryset.name = deviceDTO.name
-            queryset.lastSync = deviceDTO.lastSync
-            queryset.lastSync = deviceDTO.lastSync
+            queryset.lastSync = datetime.now()
             queryset.lastMessageAccepted = deviceDTO.lastMessageAccepted
             queryset.img = deviceDTO.img
 
