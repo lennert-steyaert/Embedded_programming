@@ -236,11 +236,13 @@ class iIO:
             return None
         else:
             queryset = IO.objects.get(pk=id)
-            queryset.type = ioDTO.type
+            if ioDTO.type != None:
+                queryset.type = ioDTO.type
             queryset.stateInteger = ioDTO.stateInteger
             queryset.stateText = ioDTO.stateText
             queryset.stateDecimal = ioDTO.stateDecimal
-            queryset.pin = ioDTO.pin
+            if ioDTO.pin != "":
+                queryset.pin = ioDTO.pin
 
             queryset.save()
 

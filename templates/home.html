@@ -27,10 +27,10 @@
                     <h7>State: </h7>
                     {% if dev.lastSync.date == datetime.date and dev.lastSync.time >= datetime.time %}
                         <!--Device online-->
-                        <i class="far fa-check-circle"></i>
+                        <i class="far fa-check-circle" style="color: greenyellow;"></i>
                     {% else %}
                         <!--Device offline-->
-                        <i class="fas fa-exclamation-triangle"></i>
+                        <i class="fas fa-exclamation-triangle" style="color: red;"></i>
                     {% endif %}
                     <hr>
                     <h7>{{dev.lastSync}}</h7>

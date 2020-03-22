@@ -80,6 +80,16 @@ def webdevices(request):
     date = datetime.now()-timedelta(seconds=30)
     return render(request,'devices.html',{'devices':devices,'datetime':date})
 
+@csrf_exempt
+def webgetio(request):
+    if json.loads(request.body.decode("utf-8")) == None:
+        return HttpResponse(status=404)
+    return io_get(request)
+
+@csrf_exempt
+def webputio(request):
+    return io_put(request)
+
 #########
 # API
 #########
@@ -371,7 +381,7 @@ def io_put(request):
         if "type" in io:
             ioobj.type = io["type"]
         else:
-            return HttpResponse(status=409)
+            ioobj.type = None
 
         if "stateInteger" in io:
             ioobj.stateInteger = io["stateInteger"]
@@ -391,7 +401,7 @@ def io_put(request):
         if "pin" in io:
             ioobj.pin = io["pin"]
         else:
-             ioobj.pin = "EMPTY"
+             ioobj.pin = ""
 
         dtoio = iIO.PutIO(id,ioobj)
 

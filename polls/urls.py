@@ -18,6 +18,8 @@ urlpatterns = [
     path('deviceIO',views.deviceIO,name='deviceIO'),
     path('webios',views.webios,name='webios'),
     path('webdevices',views.webdevices,name='webdevices'),
+    path('webgetio',views.webgetio,name='webgetio'),
+    path('webputio',views.webputio,name='webputio'),
     url(r'^signup', UserRegistrationView.as_view()),
     url(r'^signin', UserLoginView.as_view()),
     url(r'^profile', UserProfileView.as_view()),
@@ -26,4 +28,3 @@ urlpatterns = [
     url(r'^deviceioview', DeviceIOView.as_view())
  #   path('profile/<int:id>',views.device,name='device'),
 ]
-
