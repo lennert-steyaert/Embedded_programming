@@ -1,0 +1,50 @@
+
+<div class="row justify-content-md-center">
+    {% for io in ios %}
+    <div class="col-md-4 space-top" align="center">
+        <div class="deviceviewo">
+            {% if io.IO.type == 'I' %}
+                <h5>INPUT</h5>
+            {% elif io.IO.type == 'O' %}
+                <h5>OUTPUT</h5>
+            {% else %}
+                <h5>TMP102</h5>
+            {% endif %}
+            <br>
+            <h7>Pin: {{io.IO.pin}}</h7>
+            <hr>
+            <label class="switch">
+                <input id="checked{{io.pk}}" type="checkbox" onchange="checkRefresh(this.id,{{io.pk}})">
+                <span class="slider round"></span>
+            </label>
+            <h7>    Auto refresh</h7>
+        </div>
+        <div class="devicepicture">
+            <div class="padding-lr">
+                <form  action="javascript:void(0);" method="post" class="form_class"  onsubmit="ValidateForm({{io.pk}},{{io.device}})">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label align="left" for="text">Text</label>
+                    <input type="text" class="form-control" id="textinput{{io.pk}}" aria-describedby="emailHelp" value="{{io.IO.stateText}}">
+                    <small id="textlable{{io.pk}}" class="form-text text-muted">Send text press submit.</small>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label align="left" for="integer">Integer value</label>
+                    <input type="range" class="custom-range" name="foo" id="integerrange{{io.pk}}" min="0" max="1023" value="{{io.IO.stateInteger}}" onchange="updateTextInput(integerinput{{io.pk}},this.value);">
+                    <input id="integerinput{{io.pk}}" class="form-control" type="number" value="{{io.IO.stateInteger}}"  step="1" min="0" max="1023" id="textInput">
+                    <small id="integerlabel{{io.pk}}" class="form-text text-muted">Send integer press submit.</small>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label align="left" for="decimal">Decimal value</label>
+                    <input class="form-control" type="number" id="decimalinput{{io.pk}}" value="42.1"  step="0.1" min="0" max="100" id="example-number-input">
+                    <small id="decimallable{{io.pk}}" class="form-text text-muted">Send decimal press submit.</small>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>

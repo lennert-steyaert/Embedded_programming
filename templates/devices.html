@@ -1,0 +1,27 @@
+<div class="row justify-content-md-center">
+    {% for dev in devices %}
+    <div class="col-md-4 space-top" align="center"  onclick="postDevice({{dev.pk}})">
+        <div class="deviceview">
+            <h5>{{dev.name}}</h4>
+            <br>
+            <h7>ID: {{dev.pk}} | {{dev.lastMessageAccepted}}</h7>
+            <hr>
+            <h7>State: </h7>
+            {% if dev.lastSync.date == datetime.date and dev.lastSync.time >= datetime.time %}
+                <!--Device online-->
+                <i class="far fa-check-circle" style="color: greenyellow;"></i>
+            {% else %}
+                <!--Device offline-->
+                <i class="fas fa-exclamation-triangle" style="color: red;"></i>
+            {% endif %}
+            <hr>
+            <h7>{{dev.lastSync}}</h7>
+            <br>
+        </div>
+        <div class="devicepicture">
+            <a href="{{dev.img.url}}">Image here</a>
+            <!--<img class="responsive-img fitpicture" src="{{dev.img.url}}">-->
+        </div>
+    </div>
+    {% endfor %}
+ </div>
